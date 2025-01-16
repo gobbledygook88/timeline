@@ -8,3 +8,7 @@ wheels/
 
 # Virtual environments
 .venv
+
+# app files
+geolookup_cache.json
+timeline_statistics.json
