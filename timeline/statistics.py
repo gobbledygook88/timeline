@@ -10,6 +10,9 @@ def compute_statistics(places):
     distinct_countries = set()
     distinct_cities = set()
     distinct_places = set()
+    distinct_england_counties = set()
+    distinct_london_boroughs = set()
+    distinct_usa_states = set()
 
     reverse_geo = ReverseGeoLookup()
 
@@ -21,8 +24,20 @@ def compute_statistics(places):
 
         distinct_continents.add(continent)
         distinct_countries.add(address.country)
-        distinct_cities.add(address.city)  # TODO ignore None
+
+        if address.city:
+            distinct_cities.add(address.city)
+
         distinct_places.add(place["name"])  # TODO add coordinates
+
+        if address.state == "England" and (address.county or address.state_district):
+            distinct_england_counties.add(address.county or address.state_district)
+
+        if address.city == "London" and address.city_district:
+            distinct_london_boroughs.add(address.city_district)
+
+        if address.country == "United States":
+            distinct_usa_states.add(address.state)
 
         countries_per_continent[continent].add(address.country)
         num_places_per_year_per_month[place["year"]][place["month"]] += 1
@@ -45,6 +60,9 @@ def compute_statistics(places):
         "num_places_per_year_per_month": num_places_per_year_per_month,
         "num_places_per_year": num_places_per_year,
         "num_places": len(distinct_places),
+        "num_england_counties": len(distinct_england_counties),
+        "num_london_boroughs": len(distinct_london_boroughs),
+        "num_usa_states": len(distinct_usa_states),
         "continents": list(distinct_continents),
         "countries": list(distinct_countries),
         "countries_per_continent": {
@@ -53,4 +71,7 @@ def compute_statistics(places):
         },
         "cities": list(distinct_cities),
         "places": list(distinct_places),
+        "england_counties": list(distinct_england_counties),
+        "london_boroughs": list(distinct_london_boroughs),
+        "usa_states": list(distinct_usa_states),
     }
