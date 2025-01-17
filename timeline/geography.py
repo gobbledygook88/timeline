@@ -15,24 +15,31 @@ if not NOMINATIM_USER_AGENT:
 
 @dataclass
 class Address:
-    shop: str = None
     house_number: str = None
     road: str = None
+
     neighbourhood: str = None
+    suburb: str = None
+    quarter: str = None
     borough: str = None
+    village: str = None
+
+    city_district: str = None
     county: str = None
+
     city: str = None
+    province: str = None
+
     state: str = None
-    ISO3166_2_lvl4: str = None
+    state_district: str = None
+
     postcode: str = None
+
     country: str = None
     country_code: str = None
 
     @classmethod
     def from_dict(cls, env):
-        iso3166_2_lvl4 = env.pop("ISO3166-2-lvl4", None)
-        env["ISO3166_2_lvl4"] = iso3166_2_lvl4
-
         return cls(
             **{k: v for k, v in env.items() if k in inspect.signature(cls).parameters}
         )
