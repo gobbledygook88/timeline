@@ -63,15 +63,15 @@ def compute_statistics(places):
         "num_england_counties": len(distinct_england_counties),
         "num_london_boroughs": len(distinct_london_boroughs),
         "num_usa_states": len(distinct_usa_states),
-        "continents": list(distinct_continents),
-        "countries": list(distinct_countries),
+        "continents": sorted(list(distinct_continents)),
+        "countries": sorted(list(distinct_countries)),
         "countries_per_continent": {
-            continent: list(countries)
+            continent: sorted(list(countries))
             for continent, countries in countries_per_continent.items()
         },
-        "cities": list(distinct_cities),
+        "cities": sorted(list(distinct_cities)),
         "places": list(distinct_places),
-        "england_counties": list(distinct_england_counties),
-        "london_boroughs": list(distinct_london_boroughs),
-        "usa_states": list(distinct_usa_states),
+        "england_counties": sorted(list(distinct_england_counties)),
+        "london_boroughs": sorted(list(distinct_london_boroughs)),
+        "usa_states": sorted(list(distinct_usa_states)),
     }
