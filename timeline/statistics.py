@@ -73,7 +73,7 @@ def compute_statistics(places):
             for continent, countries in countries_per_continent.items()
         },
         "cities": sorted(list(distinct_cities)),
-        "places": list(distinct_places),
+        "places": sorted(list(distinct_places)),
         "england_counties": sorted(list(distinct_england_counties)),
         "london_boroughs": sorted(list(distinct_london_boroughs)),
         "usa_states": sorted(list(distinct_usa_states)),
