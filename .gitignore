@@ -9,6 +9,9 @@ wheels/
 # Virtual environments
 .venv
 
+# MacOS
+.DS_Store
+
 # app files
 geolookup_cache*.json
 timeline_statistics*.json
