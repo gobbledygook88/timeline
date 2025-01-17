@@ -10,5 +10,5 @@ wheels/
 .venv
 
 # app files
-geolookup_cache.json
-timeline_statistics.json
+geolookup_cache*.json
+timeline_statistics*.json
