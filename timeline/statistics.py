@@ -33,8 +33,11 @@ def compute_statistics(places):
         if address.state == "England" and (address.county or address.state_district):
             distinct_england_counties.add(address.county or address.state_district)
 
-        if address.city == "London" and address.city_district:
-            distinct_london_boroughs.add(address.city_district)
+        if address.city == "London" and (address.city_district or address.borough):
+            distinct_london_boroughs.add(address.city_district or address.borough)
+
+        if address.city in ("City of Westminster", "City of London"):
+            distinct_london_boroughs.add(address.city)
 
         if address.country == "United States":
             distinct_usa_states.add(address.state)
