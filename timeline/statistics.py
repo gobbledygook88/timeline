@@ -11,7 +11,7 @@ def compute_statistics(places):
     distinct_countries = set()
     distinct_cities = set()
     distinct_places = set()
-    distinct_england_counties = set()
+    distinct_uk_counties = defaultdict(set)
     distinct_london_boroughs = set()
     distinct_usa_states = set()
     most_northern_place = None
@@ -35,8 +35,24 @@ def compute_statistics(places):
 
         distinct_places.add(place)
 
-        if address.state == "England" and (address.county or address.state_district):
-            distinct_england_counties.add(address.county or address.state_district)
+        if address.country == "United Kingdom" and (
+            address.county or address.state_district
+        ):
+            if (
+                address.state_district == "East Midlands"
+                and address.city == "Nottingham"
+            ):
+                county = "Nottinghamshire"
+            elif address.county == "Gwent":
+                county = "Blaenau Gwent"
+            elif address.county == "Royal Borough of Windsor and Maidenhead":
+                county = "Windsor and Maidenhead"
+            elif address.county == "Caerphilly County Borough":
+                county = "Caerphilly"
+            else:
+                county = address.county or address.state_district
+
+            distinct_uk_counties[address.state].add(county)
 
         if address.city == "London" and (address.city_district or address.borough):
             distinct_london_boroughs.add(address.city_district or address.borough)
@@ -80,7 +96,9 @@ def compute_statistics(places):
         "num_places_per_year_per_month": num_places_per_year_per_month,
         "num_places_per_year": num_places_per_year,
         "num_places": len(distinct_places),
-        "num_england_counties": len(distinct_england_counties),
+        "num_uk_counties": sum(
+            len(counties) for counties in distinct_uk_counties.values()
+        ),
         "num_london_boroughs": len(distinct_london_boroughs),
         "num_usa_states": len(distinct_usa_states),
         "continents": sorted(list(distinct_continents)),
@@ -91,7 +109,10 @@ def compute_statistics(places):
         },
         "cities": sorted(list(distinct_cities)),
         "places": list(asdict(place) for place in sorted(distinct_places)),
-        "england_counties": sorted(list(distinct_england_counties)),
+        "uk_counties": {
+            state: sorted(list(counties))
+            for state, counties in distinct_uk_counties.items()
+        },
         "london_boroughs": sorted(list(distinct_london_boroughs)),
         "usa_states": sorted(list(distinct_usa_states)),
         "most_northern_place": asdict(most_northern_place),
